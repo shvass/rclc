@@ -285,7 +285,7 @@ rclc_parameter_server_set_service_callback(
         
         case RCLC_PARAMETER_STRING:
 
-        RCUTILS_LOG_INFO("Param %s val %s %ld %ld", parameter->name.data, parameter->value.string_value.data,
+        printf("Param %s val %s %ld %ld\n", parameter->name.data, parameter->value.string_value.data,
           parameter->value.string_value.size, parameter->value.string_value.capacity);
 
           ret = rclc_parameter_set_string2(
@@ -1448,9 +1448,9 @@ rcl_ret_t rclc_parameter_set_string2(
   rclc_parameter_set_string(&new_parameter.value.string_value, value);
   
 
-  RCUTILS_LOG_INFO("Param input %s ", value);
+  printf("Param input %s \n", value);
 
-  RCUTILS_LOG_INFO("param %s val %s %ld %ld", parameter->name.data, parameter->value.string_value.data,
+  printf("param %s val %s %ld %ld \n", parameter->name.data, parameter->value.string_value.data,
     parameter->value.string_value.size, parameter->value.string_value.capacity);
     
     if (RCL_RET_OK !=
@@ -1462,7 +1462,7 @@ rcl_ret_t rclc_parameter_set_string2(
       rosidl_runtime_c__String__fini(&new_parameter.value.string_value);
       rclc_parameter_set_string(&parameter->value.string_value, value);
     
-    RCUTILS_LOG_INFO("Param %s val %s %ld %ld", parameter->name.data, parameter->value.string_value.data,
+    printf("Param %s val %s %ld %ld \n", parameter->name.data, parameter->value.string_value.data,
       parameter->value.string_value.size, parameter->value.string_value.capacity);
 
   if (parameter_server->notify_changed_over_dds) {
