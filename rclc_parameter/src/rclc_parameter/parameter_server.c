@@ -284,6 +284,10 @@ rclc_parameter_server_set_service_callback(
           break;
         
         case RCLC_PARAMETER_STRING:
+
+        RCUTILS_LOG_INFO("Param %s val %s %ld %ld", parameter->name.data, parameter->value.string_value.data,
+          parameter->value.string_value.size, parameter->value.string_value.capacity);
+
           ret = rclc_parameter_set_string2(
             param_server, parameter->name.data, 
             request->parameters.data[i].value.string_value.data);
@@ -1443,14 +1447,23 @@ rcl_ret_t rclc_parameter_set_string2(
   rclc_parameter_descriptor_initialize_string(&new_parameter.value.string_value);
   rclc_parameter_set_string(&new_parameter.value.string_value, value);
   
-  if (RCL_RET_OK !=
-    rclc_parameter_execute_callback(parameter_server, parameter, &new_parameter))
-  {
-      return RCLC_PARAMETER_MODIFICATION_REJECTED;
-  }
 
-  rosidl_runtime_c__String__fini(&new_parameter.value.string_value);
-  rclc_parameter_set_string(&parameter->value.string_value, value);
+  RCUTILS_LOG_INFO("Param input %s ", value);
+
+  RCUTILS_LOG_INFO("param %s val %s %ld %ld", parameter->name.data, parameter->value.string_value.data,
+    parameter->value.string_value.size, parameter->value.string_value.capacity);
+    
+    if (RCL_RET_OK !=
+      rclc_parameter_execute_callback(parameter_server, parameter, &new_parameter))
+      {
+        return RCLC_PARAMETER_MODIFICATION_REJECTED;
+      }
+      
+      rosidl_runtime_c__String__fini(&new_parameter.value.string_value);
+      rclc_parameter_set_string(&parameter->value.string_value, value);
+    
+    RCUTILS_LOG_INFO("Param %s val %s %ld %ld", parameter->name.data, parameter->value.string_value.data,
+      parameter->value.string_value.size, parameter->value.string_value.capacity);
 
   if (parameter_server->notify_changed_over_dds) {
     rclc_parameter_prepare_changed_event(&parameter_server->event_list, parameter);
